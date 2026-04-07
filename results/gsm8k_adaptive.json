@@ -1,0 +1,60 @@
+{
+  "config": {
+    "model": "Qwen/Qwen2.5-7B",
+    "task": "gsm8k",
+    "num_problems": 10,
+    "gen_steps": 64,
+    "gamma_max": 8,
+    "margin_threshold": 4.0,
+    "cost_ratio": 0.05
+  },
+  "results": {
+    "vanilla": {
+      "mode": "vanilla",
+      "tokens_per_call": 7.2727272727272725,
+      "total_tokens": 640,
+      "total_verifier_calls": 88,
+      "rounds": 88,
+      "full_accept_rounds": 78,
+      "real_failure_rounds": 0,
+      "ambiguous_rounds": 10,
+      "full_accept_rate": 0.8863636363636364,
+      "real_failure_rate": 0.0,
+      "ambiguous_rate": 0.11363636363636363
+    },
+    "margin_passive": {
+      "mode": "margin_passive",
+      "tokens_per_call": 7.2727272727272725,
+      "total_tokens": 640,
+      "total_verifier_calls": 88,
+      "rounds": 88,
+      "full_accept_rounds": 78,
+      "real_failure_rounds": 0,
+      "ambiguous_rounds": 10,
+      "full_accept_rate": 0.8863636363636364,
+      "real_failure_rate": 0.0,
+      "ambiguous_rate": 0.11363636363636363
+    },
+    "margin_adaptive": {
+      "mode": "margin_adaptive",
+      "tokens_per_call": 7.2727272727272725,
+      "total_tokens": 640,
+      "total_verifier_calls": 88,
+      "rounds": 88,
+      "full_accept_rounds": 78,
+      "real_failure_rounds": 0,
+      "ambiguous_rounds": 10,
+      "full_accept_rate": 0.8863636363636364,
+      "real_failure_rate": 0.0,
+      "ambiguous_rate": 0.11363636363636363,
+      "mean_gamma": 7.613636363636363,
+      "mean_alpha_real": 0.9788777298833096,
+      "gamma_distribution": {
+        "1": 2,
+        "3": 4,
+        "8": 82
+      }
+    }
+  },
+  "speedup_adaptive_vs_vanilla": 1.0
+}
