@@ -1,0 +1,22 @@
+{
+  "1": {
+    "mean_accepted": 1.0,
+    "mean_acceptance_rate": 1.0,
+    "full_accept_rate": 1.0
+  },
+  "2": {
+    "mean_accepted": 2.0,
+    "mean_acceptance_rate": 1.0,
+    "full_accept_rate": 1.0
+  },
+  "4": {
+    "mean_accepted": 4.0,
+    "mean_acceptance_rate": 1.0,
+    "full_accept_rate": 1.0
+  },
+  "8": {
+    "mean_accepted": 8.0,
+    "mean_acceptance_rate": 1.0,
+    "full_accept_rate": 1.0
+  }
+}

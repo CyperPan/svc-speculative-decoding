@@ -1,0 +1,60 @@
+{
+  "config": {
+    "model": "Qwen/Qwen2.5-7B",
+    "task": "humaneval",
+    "num_problems": 20,
+    "gen_steps": 64,
+    "svc_bits": 3,
+    "svc_chunk_size": 64
+  },
+  "summary": {
+    "1": {
+      "samples": 160,
+      "mean_accepted": 0.9875,
+      "per_token_accept": 0.9875,
+      "full_match_rate": 0.9875,
+      "distribution": {
+        "1": 158,
+        "0": 2
+      }
+    },
+    "2": {
+      "samples": 160,
+      "mean_accepted": 1.95625,
+      "per_token_accept": 0.978125,
+      "full_match_rate": 0.96875,
+      "distribution": {
+        "2": 155,
+        "0": 2,
+        "1": 3
+      }
+    },
+    "4": {
+      "samples": 160,
+      "mean_accepted": 3.875,
+      "per_token_accept": 0.96875,
+      "full_match_rate": 0.95625,
+      "distribution": {
+        "4": 153,
+        "3": 1,
+        "0": 2,
+        "2": 1,
+        "1": 3
+      }
+    },
+    "8": {
+      "samples": 160,
+      "mean_accepted": 7.69375,
+      "per_token_accept": 0.96171875,
+      "full_match_rate": 0.95,
+      "distribution": {
+        "8": 152,
+        "3": 1,
+        "0": 2,
+        "7": 1,
+        "2": 1,
+        "1": 3
+      }
+    }
+  }
+}

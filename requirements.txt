@@ -1,0 +1,7 @@
+torch>=2.4
+transformers>=4.40
+numpy
+matplotlib
+
+# Optional, only needed for real-task evals (eval_task_acceptance.py)
+datasets

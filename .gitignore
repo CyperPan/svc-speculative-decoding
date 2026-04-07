@@ -1,0 +1,25 @@
+__pycache__/
+*.py[co]
+*.egg-info/
+.venv/
+.env
+
+# Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Local model cache (huge)
+*.safetensors
+*.bin
+hf_cache/
+
+# Logs from interactive runs (the SLURM ones go in scripts/, sbatch outputs land at runtime)
+*.out
+*.err
+slurm-*.out
+
+# Plots and big artifacts that get regenerated
+*.png
+*.pdf

@@ -1,0 +1,22 @@
+{
+  "1": {
+    "mean_best_match": 4.0,
+    "any_full_match_rate": 1.0,
+    "mean_unique_first": 1.0
+  },
+  "4": {
+    "mean_best_match": 4.0,
+    "any_full_match_rate": 1.0,
+    "mean_unique_first": 1.0
+  },
+  "8": {
+    "mean_best_match": 4.0,
+    "any_full_match_rate": 1.0,
+    "mean_unique_first": 1.0
+  },
+  "16": {
+    "mean_best_match": 4.0,
+    "any_full_match_rate": 1.0,
+    "mean_unique_first": 1.0
+  }
+}
