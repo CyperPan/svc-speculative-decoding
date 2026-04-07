@@ -1,10 +1,73 @@
 # SVC Speculative Decoding
 
-3-bit chunked-DPCM quantization of LLM KV caches that drops draft-phase
-memory to ~20% of FP16 baseline while preserving 95-100% bit-exact agreement
-with full-precision greedy decoding.
+> A KV cache compression scheme designed specifically for the **draft phase**
+> of speculative decoding, where the wasted-work cost of low-precision
+> failures is far smaller than in normal inference.
 
 See [REPORT.md](REPORT.md) for the full results writeup.
+
+## The problem
+
+**Speculative decoding** accelerates LLM inference by letting a cheap draft
+process propose γ candidate tokens that the full target model verifies in
+parallel. The standard bottleneck is *draft memory*: each parallel branch
+needs its own KV cache, and on long contexts this dominates HBM usage and
+caps the tree width / batch size you can run.
+
+The obvious fix is to **quantize the KV cache**. The catch is that existing
+KV quantization work (KIVI, Atom, KVQuant, …) is designed for the *main
+inference path*: every quantization error degrades final output quality
+forever, so they spend a lot of complexity defending against worst-case
+errors and still typically need 4 bits to stay safe.
+
+Speculative decoding has a fundamentally different error budget. The draft
+is *throwaway* — anything the verifier rejects is just wasted work, never
+output. So a draft-side cache can run at much more aggressive precision as
+long as:
+
+1. it produces the *same* tokens as full precision on most positions, and
+2. the rare divergences are cheap to detect and fall back from.
+
+Regular KV quantization optimizes for absolute fidelity. SVC optimizes for
+*verifier-aligned agreement* — a different objective that turns out to be
+easier to satisfy, and lets us push down to 3 bits (~20% of FP16) without
+hurting the verifier's output at all.
+
+## What SVC actually is
+
+A two-layer KV cache encoding inspired by Scalable Video Coding:
+
+- **Base layer**: 3-bit chunked anchor-based DPCM. Used by the draft.
+  Memory: ~20% of FP16. Per-token agreement with full cache: 95-100%.
+- **Refinement layer**: FP16 residual on top of the base. Used only by the
+  verifier. Adding it back gives bit-exact reconstruction.
+
+The base layer alone is what speeds the draft up. The refinement layer
+guarantees that the verifier sees the *exact* original cache, so final
+output quality is mathematically identical to vanilla speculative decoding.
+Memory savings show up in the draft, correctness comes from the verifier —
+the asymmetry is the whole point.
+
+## Why a new encoder, instead of reusing KIVI / Atom / KVQuant?
+
+Three things broke when we tried the existing schemes:
+
+1. **They target a different metric.** They minimize per-element MSE on the
+   KV cache. We want to minimize *output token disagreement* with the
+   reference, which is a much sparser signal — most positions tolerate
+   large MSE, a few positions don't tolerate any.
+2. **They're built around per-channel scaling and outlier handling**, both
+   of which add overhead the draft phase can't afford.
+3. **They have no notion of a refinement layer.** With them, the verifier
+   would also have to consume quantized KVs, which shifts the final
+   output distribution. We want the verifier to be byte-identical to
+   non-speculative, so the layered design is essential.
+
+The Phase 0 ablation in REPORT.md shows the empirical reasoning behind
+chunked anchor-based DPCM specifically (rather than per-token, per-channel,
+or cumulative DPCM): it's the simplest scheme that exploits the actual
+redundancy structure of LLM KV caches without compounding error along the
+sequence.
 
 ## Headline numbers
 
